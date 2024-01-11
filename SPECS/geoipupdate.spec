@@ -2,7 +2,7 @@
 
 Name:		geoipupdate
 Version:	2.5.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Update GeoIP2 and GeoIP Legacy binary databases from MaxMind
 License:	GPLv2
 URL:		http://dev.maxmind.com/geoip/geoipupdate/
@@ -21,6 +21,8 @@ BuildRequires:	perl(File::Spec)
 BuildRequires:	perl(LWP::Simple)
 BuildRequires:	perl(PerlIO::gzip)
 BuildRequires:	perl(strict)
+
+Patch0000:	0000-hashed-license.patch
 
 %description
 The GeoIP Update program performs automatic updates of GeoIP2 and GeoIP
@@ -51,6 +53,8 @@ Cron job for weekly updates to GeoIP IPv6 Legacy database from MaxMind.
 
 %prep
 %setup -q
+
+%patch0 -p1 -b .hashed-license
 
 %build
 %configure --disable-static --disable-dependency-tracking
@@ -99,6 +103,9 @@ mkdir -p %{buildroot}%{_datadir}/GeoIP/download/
 %ghost %{_datadir}/GeoIP/download/GeoIPASNumv6.dat.gz
 
 %changelog
+* Thu Apr 27 2023 Michal Ruprich <mruprich@redhat.com> - 2.5.0-3
+- Resolves: #2182141 - Add support for hashed license keys to geoipupdate
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
